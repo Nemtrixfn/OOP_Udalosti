@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace OOP_Udalosti
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        List<Entity> entities = new List<Entity>();
+
+        public MainWindow()
+        {
+            InitializeComponent();
+           
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            GenerationEntities();
+            DrawEntities();
+        }
+
+        private void DrawEntities()
+        {
+            Canvas1.Children.Clear();
+            foreach (var entity in entities)
+            {
+                var rectangle = new Rectangle();
+                rectangle.Width = entity.Size;
+                rectangle.Height = entity.Size;
+                rectangle.Fill = entity.Color;
+                rectangle.Stroke = Brushes.Black;
+                rectangle.StrokeThickness = 1;
+                Canvas.SetLeft(rectangle, entity.Location.X);
+                Canvas.SetTop(rectangle, entity.Location.Y);
+                Canvas1.Children.Add(rectangle);
+            }
+        }
+
+
+        private void GenerationEntities()
+        {
+            entities.Clear();
+            Random random = new Random();
+            for (int i = 0; i < 25; i++)
+            {
+                var Entity = new Entity();
+                Entity.Size = random.NextDouble() * 50 + 20;
+                var x = random.NextDouble() * (Canvas1.ActualWidth - Entity.Size);
+                var y = random.NextDouble() * (Canvas1.ActualHeight - Entity.Size);
+                Entity.Location = new Point(x, y);
+                entities.Add(Entity);
+
+            }
+
+        }
+    }
+}
